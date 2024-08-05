@@ -1,1 +1,1 @@
-worker: python auto_response.py
+worker: python gg.py
