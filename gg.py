@@ -1,4 +1,5 @@
 from telethon import TelegramClient, events
+import asyncio
 
 # Your API ID and API Hash from my.telegram.org
 api_id = 22858464
