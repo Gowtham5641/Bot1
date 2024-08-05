@@ -1,5 +1,4 @@
 from telethon import TelegramClient, events
-import asyncio
 
 # Your API ID and API Hash from my.telegram.org
 api_id = 22858464
@@ -18,8 +17,6 @@ client = TelegramClient('session_name', api_id, api_hash)
 async def handler(event):
     # Check if the sender is not the bot itself
     if event.sender_id != (await client.get_me()).id:
-        # Wait for 30 seconds before replying
-        await asyncio.sleep(30)
         await event.reply("Message me For Free Ton\nYou're eligible for free TON")
 
 async def main():
