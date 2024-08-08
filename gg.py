@@ -1,4 +1,5 @@
 from telethon import TelegramClient, events
+import asyncio  # Make sure asyncio is imported
 import random
 
 # Your API ID and API Hash from my.telegram.org
@@ -47,3 +48,4 @@ async def main():
 
 if __name__ == '__main__':
     asyncio.run(main())
+    
