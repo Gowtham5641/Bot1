@@ -37,11 +37,11 @@ messages = [
 async def handler(event):
     # Check if the sender is not the bot itself
     if event.sender_id != (await client.get_me()).id:
-        # Wait for 2 seconds before replying
-        await asyncio.sleep(2)
         # Select a random message
         reply_message = random.choice(messages)
         await event.reply(reply_message, parse_mode='markdown')
+        # Wait for 2 seconds before sending another message
+        await asyncio.sleep(2)
 
 async def main():
     await client.start(phone_number)
