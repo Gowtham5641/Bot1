@@ -1,6 +1,6 @@
 from telethon import TelegramClient, events
-import asyncio  # Make sure asyncio is imported
 import random
+import asyncio  # Ensure asyncio is imported
 
 # Your API ID and API Hash from my.telegram.org
 api_id = 22858464
@@ -15,6 +15,7 @@ group_id = 2226019478  # Group IDs are usually negative
 # Create the client and connect
 client = TelegramClient('session_name', api_id, api_hash)
 
+# List of messages to send
 messages = [
     "🎉 **Get Free TON Tokens!** 🎉\nMessage me to receive your free TON tokens!",
     "🚀 **Claim Your Free TON Tokens Now!** 🚀\nMessage me to get started!",
@@ -33,6 +34,7 @@ messages = [
     "🎊 **Join the Free TON Tokens Giveaway!** 🎊\nMessage me to participate!"
 ]
 
+# Event handler for new messages in the group
 @client.on(events.NewMessage(chats=group_id))
 async def handler(event):
     # Check if the sender is not the bot itself
@@ -41,11 +43,13 @@ async def handler(event):
         reply_message = random.choice(messages)
         await event.reply(reply_message, parse_mode='markdown')
 
+# Main function to start the client
 async def main():
     await client.start(phone_number)
     print("Bot is running...")
     await client.run_until_disconnected()
 
+# Start the bot
 if __name__ == '__main__':
     asyncio.run(main())
     
