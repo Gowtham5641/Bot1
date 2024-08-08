@@ -1,5 +1,4 @@
 from telethon import TelegramClient, events
-import asyncio
 import random
 
 # Your API ID and API Hash from my.telegram.org
@@ -40,8 +39,6 @@ async def handler(event):
         # Select a random message
         reply_message = random.choice(messages)
         await event.reply(reply_message, parse_mode='markdown')
-        # Wait for 2 seconds before sending another message
-        await asyncio.sleep(2)
 
 async def main():
     await client.start(phone_number)
@@ -50,4 +47,3 @@ async def main():
 
 if __name__ == '__main__':
     asyncio.run(main())
-    
