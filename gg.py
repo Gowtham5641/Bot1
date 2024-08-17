@@ -1,52 +1,69 @@
-from telethon import TelegramClient, events
-import random
-import asyncio  # Ensure asyncio is imported
+from telethon import TelegramClient
+from telethon.tl.functions.channels import JoinChannelRequest
+import asyncio
+import time
 
 # Your API ID and API Hash from my.telegram.org
-api_id = 22858464
-api_hash = '2a15cab706be6999c037a49f3e430188'
+api_id = 26885611
+api_hash = 'b35690cb29129d11f070995148cddb07'
 
 # Your phone number
-phone_number = '+91 6374025998'
+phone_number = '+923090916423'
 
-# The group ID you want to monitor
-group_id = 2226019478  # Group IDs are usually negative
-
-# Create the client and connect
-client = TelegramClient('session_name', api_id, api_hash)
-
-# List of messages to send
-messages = [
-    "🎉 **Get Free TON Tokens!** 🎉\nMessage me to receive your free TON tokens!",
-    "🚀 **Claim Your Free TON Tokens Now!** 🚀\nMessage me to get started!",
-    "🎊 **Free TON Tokens Available!** 🎊\nMessage me to claim yours!",
-    "★ **Free TON Tokens for You!** ★\nMessage me to get your tokens!",
-    "✨ **Exclusive: Free TON Tokens!** ✨\nMessage me to find out more!",
-    "🌟 **Don't Miss Out on Free TON Tokens!** 🌟\nMessage me now!",
-    "🎁 **Special Offer: Free TON Tokens!** 🎁\nMessage me to claim yours!",
-    "🔥 **Hot Deal: Free TON Tokens!** 🔥\nMessage me to get yours now!",
-    "💎 **Free TON Tokens Just for You!** 💎\nMessage me to receive them!",
-    "📣 **Free TON Tokens Available!** 📣\nMessage me to claim your tokens!",
-    "🎉 **Celebrate with Free TON Tokens!** 🎉\nMessage me to get yours!",
-    "🎁 **Surprise: Free TON Tokens!** 🎁\nMessage me to claim your reward!",
-    "⭐ **Free TON Tokens Offer!** ⭐\nMessage me to get your tokens!",
-    "🚀 **Get Your Free TON Tokens!** 🚀\nMessage me to find out how!",
-    "🎊 **Join the Free TON Tokens Giveaway!** 🎊\nMessage me to participate!"
+# List of group usernames to join
+group_usernames = [
+    '@BuYeRssAnDsElLeRss',
+    '@chatting_girls_boys_and',
+    '@Tamilhotchattingg1',
+    '@BHABHI_FREE_GIRLS_GRUOP',
+    '@INDIAN_SINGING_GRUOP',
+    '@spamm_link',
+    '@Bhabhi_chatting_Group_Interfaith',
+    '@FREE_COUPALE_SHOW',
+    '@SHARE_GRUOP_LINK',
+    '@Chatting_Group_Adultt',
+    '@Cum_world_tributer',
+    '@share_link1',
+    '@and_boys_girls_chatting',
+    '@GIRLS_AND_BOYS_CHATTING_GRUOP',
+    '@GIRLFRAIND_WIFE_INDIAA_SWAPPING',
+    '@ice_shirajmolla',
+    '@freelinksharegroups',
+    '@EXCHANGELINKS_SHARE',
+    '@BHABHI_GRUOP_TINDER',
+    '@indian_gay_chat_group',
+    '@freepromos480',
+    '@WIFE_SWAPPING_INDIA_COUPLES',
+    '@combochatdaily',
+    '@Web3FarmAirdrop',
+    '@airdrophub_chat01',
+    '@BHABHI_GIRLS_CHATTING_GRUOP',
+    '@habitcommunitychat3',
+    '@cryptoz_chat',
+    '@configsetup1',
+    '@BlockchainSage',
+    '@CryptoChatting1',
+    '@Crackerspace'
 ]
 
-# Event handler for new messages in the group
-@client.on(events.NewMessage(chats=group_id))
-async def handler(event):
-    # Check if the sender is not the bot itself
-    if event.sender_id != (await client.get_me()).id:
-        # Select a random message
-        reply_message = random.choice(messages)
-        await event.reply(reply_message, parse_mode='markdown')
+# Function to join groups with a delay
+async def join_groups(client):
+    for username in group_usernames:
+        try:
+            await client(JoinChannelRequest(username))
+            print(f"Joined group: {username}")
+        except Exception as e:
+            print(f"Failed to join {username}: {str(e)}")
+        # Wait for 2 seconds before joining the next group
+        time.sleep(15)
 
-# Main function to start the client
+# Main function to start the client and join groups
 async def main():
+    client = TelegramClient('session_name', api_id, api_hash)
     await client.start(phone_number)
-    print("Bot is running...")
+    print("Client is running...")
+
+    await join_groups(client)
     await client.run_until_disconnected()
 
 # Start the bot
