@@ -60,7 +60,7 @@ async def join_groups(client):
         except Exception as e:
             print(f"Unexpected error for {username}: {str(e)}")
         # Wait for 2 seconds before joining the next group
-        time.sleep(2)
+        time.sleep(15)
 
 # Main function to start the client and join groups
 async def main():
