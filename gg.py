@@ -1,5 +1,6 @@
 from telethon import TelegramClient
 from telethon.tl.functions.channels import JoinChannelRequest
+from telethon.tl.functions.channels import GetChannelsRequest
 import asyncio
 import time
 
@@ -46,16 +47,28 @@ group_usernames = [
     '@Crackerspace'
 ]
 
+# Function to check if already a member
+async def is_member(client, username):
+    try:
+        chat = await client(GetChannelsRequest([username]))
+        return chat.chats[0].id
+    except Exception:
+        return None
+
 # Function to join groups with a delay
 async def join_groups(client):
     for username in group_usernames:
+        if await is_member(client, username):
+            print(f"Already a member of group: {username}")
+            continue
+
         try:
             await client(JoinChannelRequest(username))
             print(f"Joined group: {username}")
         except Exception as e:
             print(f"Failed to join {username}: {str(e)}")
         # Wait for 2 seconds before joining the next group
-        time.sleep(15)
+        time.sleep(2)
 
 # Main function to start the client and join groups
 async def main():
