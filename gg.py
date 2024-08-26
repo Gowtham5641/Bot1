@@ -1,8 +1,6 @@
-from telethon import TelegramClient
-from telethon.tl.functions.channels import JoinChannelRequest
-from telethon.errors import UserAlreadyParticipantError, ChatAdminRequiredError, ChannelPrivateError, ChannelInvalidError
+from telethon import TelegramClient, events
+import re
 import asyncio
-import time
 
 # Your API ID and API Hash from my.telegram.org
 api_id = 26885611
@@ -11,64 +9,39 @@ api_hash = 'b35690cb29129d11f070995148cddb07'
 # Your phone number
 phone_number = '+923090916423'
 
-# List of group usernames to join
-group_usernames = [
-    '@BuYeRssAnDsElLeRss',
-    '@chatting_girls_boys_and',
-    '@Tamilhotchattingg1',
-    '@BHABHI_FREE_GIRLS_GRUOP',
-    '@INDIAN_SINGING_GRUOP',
-    '@spamm_link',
-    '@Bhabhi_chatting_Group_Interfaith',
-    '@FREE_COUPALE_SHOW',
-    '@SHARE_GRUOP_LINK',
-    '@Chatting_Group_Adultt',
-    '@Cum_world_tributer',
-    '@share_link1',
-    '@and_boys_girls_chatting',
-    '@GIRLS_AND_BOYS_CHATTING_GRUOP',
-    '@GIRLFRAIND_WIFE_INDIAA_SWAPPING',
-    '@ice_shirajmolla',
-    '@freelinksharegroups',
-    '@EXCHANGELINKS_SHARE',
-    '@BHABHI_GRUOP_TINDER',
-    '@indian_gay_chat_group',
-    '@freepromos480',
-    '@WIFE_SWAPPING_INDIA_COUPLES',
-    '@combochatdaily',
-    '@Web3FarmAirdrop',
-    '@airdrophub_chat01',
-    '@BHABHI_GIRLS_CHATTING_GRUOP',
-    '@habitcommunitychat3',
-    '@cryptoz_chat',
-    '@configsetup1',
-    '@BlockchainSage',
-    '@CryptoChatting1',
-    '@Crackerspace'
-]
+# Group ID where the bot should reply and send messages
+group_id = 2205452808
 
-# Function to join groups with a delay
-async def join_groups(client):
-    for username in group_usernames:
-        try:
-            await client(JoinChannelRequest(username))
-            print(f"Joined group: {username}")
-        except UserAlreadyParticipantError:
-            print(f"Already a member of group: {username}")
-        except (ChatAdminRequiredError, ChannelPrivateError, ChannelInvalidError) as e:
-            print(f"Failed to join {username}: {str(e)}")
-        except Exception as e:
-            print(f"Unexpected error for {username}: {str(e)}")
-        # Wait for 2 seconds before joining the next group
-        time.sleep(100)
+# Regular expression pattern to detect URLs
+url_pattern = re.compile(r'https?://\S+|www\.\S+')
 
-# Main function to start the client and join groups
+# Event handler for new messages
+async def handler(event):
+    message_text = event.message.message
+    
+    # Check if the message contains a URL
+    if not url_pattern.search(message_text):
+        # Reply to the message if it doesn't contain a URL
+        await event.reply('You Just Won A Free Ton Message me to claim.')
+
+# Function to send a message to a specific group
+async def send_message_to_group(client, group_id, message):
+    # Fetch the entity (group)
+    group_entity = await client.get_entity(group_id)
+    await client.send_message(group_entity, message)
+
+# Main function to start the client and manage events
 async def main():
     client = TelegramClient('session_name', api_id, api_hash)
     await client.start(phone_number)
     print("Client is running...")
 
-    await join_groups(client)
+    # Send a message to the specific group
+    await send_message_to_group(client, group_id, "Hello, this is a message from the bot.")
+
+    # Listen for new messages and respond
+    client.add_event_handler(handler, events.NewMessage(chats=group_id))
+    
     await client.run_until_disconnected()
 
 # Start the bot
