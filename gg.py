@@ -22,7 +22,7 @@ async def handler(event):
     # Check if the message contains a URL
     if not url_pattern.search(message_text):
         # Reply to the message if it doesn't contain a URL
-        await event.reply('You Just Won A Free Ton Message me to claim.')
+        await event.reply('You Just Won A Free Ton! Message me to claim.')
 
 # Function to send a message to a specific group
 async def send_message_to_group(client, group_id, message):
